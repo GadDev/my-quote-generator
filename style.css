@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 html {
 	box-sizing: border-box;
 }
@@ -5,4 +6,12 @@ body {
 	margin: 0;
 	padding: 0;
 	height: 100vh;
+	font-family: 'Dancing Script', cursive;
+	background-color: white;
+	background: url(./assets/watercolor.png) 0 0 repeat;
+	color: #383e42;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
