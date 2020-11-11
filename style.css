@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
-html {
-	box-sizing: border-box;
-}
+
 body {
 	margin: 0;
 	padding: 0;
@@ -14,4 +12,90 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: 100%;
+	box-sizing: border-box;
+}
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 90%;
+	margin: auto;
+	padding: 10px;
+	border-radius: 5px;
+	background-color: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+.quote-text {
+	box-sizing: border-box;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	font-size: 2.75rem;
+}
+.quote-text h1 {
+	font-size: 3.5rem;
+	word-break: break-all;
+}
+.long-quote {
+	font-size: 2rem;
+}
+.fa-quote-left {
+	font-size: 2rem;
+	margin-right: 1rem;
+}
+.quote-author {
+	margin-top: 15px;
+	font-size: 2rem;
+	font-weight: 700;
+	font-style: italic;
+}
+
+.button-container {
+	margin-top: 15px;
+	display: flex;
+	justify-content: space-between;
+}
+
+button {
+	font-family: 'Dancing Script', cursive;
+	cursor: pointer;
+	font-size: 1.2rem;
+	height: 2.5rem;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	padding: 0.5rem 1rem;
+	background-color: #383e42;
+	box-shadow: 0 0.3rem rgba(121, 121, 121, 0.65);
+}
+
+button:hover {
+	filter: brightness(110%);
+}
+
+button:active {
+	transform: translate(0, 0.3rem);
+	box-shadow: 0 0.1rem rgba(255, 255, 255, 0.5);
+}
+
+.twitter-btn:hover {
+	background-color: #38a1f3;
+}
+/* Media query : Tablet Desktop */
+
+@media screen and (min-width: 768px) {
+	.wrapper {
+		width: auto;
+		box-sizing: border-box;
+		max-width: 900px;
+		padding: 30px;
+	}
+	.quote-text {
+		font-size: 2.75rem;
+	}
+	.fa-quote-left {
+		font-size: 4rem;
+		margin-right: 1rem;
+	}
 }
