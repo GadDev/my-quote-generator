@@ -7,7 +7,7 @@ const newQuoteBtn = document.getElementById('new-quote');
 const loader = document.getElementById('loader');
 // Get quote from APi
 async function getQuote() {
-	const errorCounter = 0;
+	let errorCounter = 0;
 	showLoadingSpinner();
 	const proxyUrl = 'https://mysterious-retreat-29857.herokuapp.com/';
 	const apiURL =
