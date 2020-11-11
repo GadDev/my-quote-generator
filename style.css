@@ -33,14 +33,14 @@ body {
 	font-size: 2.75rem;
 }
 .quote-text h1 {
-	font-size: 3.5rem;
-	word-break: break-all;
+	font-size: 1.5rem;
+	line-height: 1.5;
 }
 .long-quote {
 	font-size: 2rem;
 }
 .fa-quote-left {
-	font-size: 2rem;
+	font-size: 1rem;
 	margin-right: 1rem;
 }
 .quote-author {
