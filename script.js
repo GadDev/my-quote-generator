@@ -4,10 +4,12 @@ const quoteText = document.getElementById('quote');
 const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
+const previousQuoteBtn = document.getElementById('previous-quote');
 const loader = document.getElementById('loader');
+let quoteObj;
+let errorCounter = 0;
 // Get quote from APi
 async function getQuote() {
-	let errorCounter = 0;
 	showLoadingSpinner();
 	const proxyUrl = 'https://mysterious-retreat-29857.herokuapp.com/';
 	const apiURL =
@@ -15,18 +17,17 @@ async function getQuote() {
 	try {
 		const response = await fetch(proxyUrl + apiURL);
 		const data = await response.json();
-		// if author empty string addin fallback string
-		data.quoteAuthor === ''
-			? (authorText.innerText = 'Unknown')
-			: (authorText.innerText = data.quoteAuthor);
-		//Reduce long size for long quote
-		data.quoteText.length > 120
-			? quoteText.classList.add('long-quote')
-			: quoteText.classList.remove('long-quote');
-		quoteText.innerText = data.quoteText;
+		const localQuote = getQuoteFromLocalStorage();
+		implementTextData(data);
+		if (localQuote.quoteText === '') {
+			saveQuoteOnLocalStorage(quoteText.innerText, authorText.innerText);
+		}
+
 		removeLoadingSpinner();
 	} catch (error) {
-		errorCounter++;
+		console.log(error);
+		errorCounter += 1;
+		console.log(errorCounter);
 		if (errorCounter <= 10) {
 			getQuote();
 		} else {
@@ -36,11 +37,42 @@ async function getQuote() {
 	}
 }
 
+function implementTextData(data) {
+	// if author empty string addin fallback string
+
+	//Reduce long size for long quote
+	data.quoteAuthor === ''
+		? (authorText.innerText = 'Unknown')
+		: (authorText.innerText = data.quoteAuthor);
+	//Reduce long size for long quote
+	data.quoteText.length > 120
+		? quoteText.classList.add('long-quote')
+		: quoteText.classList.remove('long-quote');
+	quoteText.innerText = data.quoteText;
+}
+
 function tweetQuote() {
 	const quote = quoteText.innerText;
 	const author = authorText.innerText;
 	const twitterURL = `https://twitter.com/intent/tweet?text=${quote} - ${author}`;
 	window.open(twitterURL, '_blank');
+}
+
+function saveQuoteOnLocalStorage(text, author) {
+	const quoteObj = {
+		quoteText: text,
+		quoteAuthor: author,
+	};
+	// Put the object into storage
+	return localStorage.setItem('quote', JSON.stringify(quoteObj));
+}
+
+function removeQuoteOnLocalStorage() {
+	return localStorage.removeItem('quote');
+}
+
+function getQuoteFromLocalStorage() {
+	return JSON.parse(localStorage.getItem('quote'));
 }
 
 function removeLoadingSpinner() {
@@ -58,5 +90,10 @@ function showLoadingSpinner() {
 //Event listeners
 newQuoteBtn.addEventListener('click', getQuote);
 twitterBtn.addEventListener('click', tweetQuote);
+previousQuoteBtn.addEventListener('click', function () {
+	const prevQuote = getQuoteFromLocalStorage();
+	implementTextData(prevQuote);
+	removeQuoteOnLocalStorage();
+});
 // on load
 getQuote();
