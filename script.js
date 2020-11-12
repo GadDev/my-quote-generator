@@ -17,11 +17,12 @@ async function getQuote() {
 	try {
 		const response = await fetch(proxyUrl + apiURL);
 		const data = await response.json();
-		const localQuote = getQuoteFromLocalStorage();
 		implementTextData(data);
-		if (localQuote.quoteText === '') {
-			saveQuoteOnLocalStorage(quoteText.innerText, authorText.innerText);
-		}
+		saveQuoteOnLocalStorage(
+			quoteText.innerText,
+			authorText.innerText,
+			'currentQuote'
+		);
 
 		removeLoadingSpinner();
 	} catch (error) {
@@ -39,8 +40,6 @@ async function getQuote() {
 
 function implementTextData(data) {
 	// if author empty string addin fallback string
-
-	//Reduce long size for long quote
 	data.quoteAuthor === ''
 		? (authorText.innerText = 'Unknown')
 		: (authorText.innerText = data.quoteAuthor);
@@ -58,21 +57,21 @@ function tweetQuote() {
 	window.open(twitterURL, '_blank');
 }
 
-function saveQuoteOnLocalStorage(text, author) {
+function saveQuoteOnLocalStorage(text, author, item) {
 	const quoteObj = {
 		quoteText: text,
 		quoteAuthor: author,
 	};
 	// Put the object into storage
-	return localStorage.setItem('quote', JSON.stringify(quoteObj));
+	return localStorage.setItem(item, JSON.stringify(quoteObj));
 }
 
-function removeQuoteOnLocalStorage() {
-	return localStorage.removeItem('quote');
+function removeQuoteOnLocalStorage(item) {
+	return localStorage.removeItem(item);
 }
 
-function getQuoteFromLocalStorage() {
-	return JSON.parse(localStorage.getItem('quote'));
+function getQuoteFromLocalStorage(item) {
+	return JSON.parse(localStorage.getItem(item));
 }
 
 function removeLoadingSpinner() {
@@ -88,12 +87,19 @@ function showLoadingSpinner() {
 }
 
 //Event listeners
-newQuoteBtn.addEventListener('click', getQuote);
+newQuoteBtn.addEventListener('click', function () {
+	const currentQuote = getQuoteFromLocalStorage('currentQuote');
+	saveQuoteOnLocalStorage(
+		currentQuote.quoteText,
+		currentQuote.quoteAuthor,
+		'previousQuote'
+	);
+	getQuote();
+});
 twitterBtn.addEventListener('click', tweetQuote);
 previousQuoteBtn.addEventListener('click', function () {
-	const prevQuote = getQuoteFromLocalStorage();
-	implementTextData(prevQuote);
-	removeQuoteOnLocalStorage();
+	const prevQuote = getQuoteFromLocalStorage('previousQuote');
+	return prevQuote ? implementTextData(prevQuote) : false;
 });
 // on load
 getQuote();
